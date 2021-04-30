@@ -34,7 +34,6 @@ async function sequelizePlugin(app, opts, done) {
           collate: "utf8_general_ci",
         },
         timezone: MARIADB_TIMEZONE,
-        // logging: DB_NAME === "alpha_cardplay" ? true : false,
         pool: {
           max: 5,
           min: 0,
