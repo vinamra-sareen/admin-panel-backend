@@ -77,7 +77,8 @@ module.exports = function (instance, opts, done) {
 
             parent_module_id = module_id != null ? module_id : 0;
 
-            modules = await modulesController.findBy({status, parent_module_id });  
+            modules = await modulesController.findBy({status, parent_module_id });
+          
             modules = _.map(modules, _.partialRight(_.pick, ['module_id', 'module_link', 'navigation_name']));
             reply.send({ modules });  
           }
