@@ -1,6 +1,6 @@
 /* Pagination */
 module.exports = (count, page, limit = 5) => {
-    let maxPages = Math.floor(count / limit) + 1;
+    let maxPages = Math.floor(count / limit) ;
     let offset = 0;
   
     if (page > maxPages) {

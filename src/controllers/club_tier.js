@@ -34,7 +34,7 @@ class ClubTierController {
       return req.validationError;
     }
     
-    const [tiers, created] = await this.tier.findAll();
+    const tiers = await this.tier.findAll();
     return tiers;
   };
 

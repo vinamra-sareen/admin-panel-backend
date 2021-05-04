@@ -1,7 +1,8 @@
+const { userDocParams } = require('../schemas/admin');
 const UserController = require("../controllers/users");
 const DocumentTypeController = require("../controllers/document_type");
 const UserDocumentController = require("../controllers/user_document");
-const { userDocParams } = require('../schemas/admin')
+const UserBankingInformationRecordController = require("../controllers/user_banking_information_record");
 
 /*
  *     All the routes related to user, will be available below
@@ -13,8 +14,9 @@ module.exports = function (instance, opts, done) {
   const userController = new UserController(instance);
   const userDocumentController = new UserDocumentController(instance);
   const documentTypeController = new DocumentTypeController(instance);
+  const userBankingInformationRecordController = new UserBankingInformationRecordController(instance);
 
-  // Route to find user based on conditions.
+  // Route to find based on conditions.
   instance.get("/userDocumentList", {
     // Used to validate and serialize response and body
     schema: { query: userDocParams },
@@ -42,6 +44,21 @@ module.exports = function (instance, opts, done) {
         }
       }
       reply.send(result);
+    },
+  });
+
+  // Route to find based on conditions.
+  instance.get("/get_bank_details_report", {
+    // Used to validate and serialize response and body
+    schema: { },
+    preValidation: [instance.authenticate, instance.isAdmin],
+    // Handles the operation
+    handler: async (req, reply) => {
+      let result = null;
+      
+      result = await userBankingInformationRecordController.findAll({ ...req.query });
+      
+      reply.code(200).send(result);
     },
   });
   

@@ -21,7 +21,7 @@ app.register(require('fastify-cors'), {
 );
 
 // Redis for super fast data fetch. Isn't it  mind blowing 🤯
-app.register(require('fastify-redis'), { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT })
+// app.register(require('fastify-redis'), { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT })
 
 // Load Jwt based Authentication Middleware 
 app.register(require('./src/middleware/auth'));

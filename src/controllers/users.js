@@ -40,16 +40,10 @@ class UserController {
 
         return { statusCode: 200, message: "Logged In !", user_name, is_admin, user_id };
       } else {
-        return {
-          statusCode: 201,
-          message: "Invalid Credentials, please check again.",
-        };
+        return { statusCode: 201 };
       }
     } else {
-      return {
-        statusCode: 201, 
-        message: `No user found for ${user_name}`
-      }
+      return { statusCode: 201 };
     }
   };
 
@@ -67,10 +61,12 @@ class UserController {
     if (req.validationError) {
       return req.validationError;
     }
+
+    /*
     const { page = 1 } = req;
     const count = await this.user.count();
 
-    /* Pagination */
+     // Pagination
     const { canPaginate, limit, offset, maxPages } = paginate(count, page, 5);
 
     if (!canPaginate) {
@@ -79,23 +75,11 @@ class UserController {
         message: `The page you are trying to go doesn\'t exist, Make sure the page you are trying to reach is in range 1-${maxPages}`,
       };
     }
-    /** Pagination ends here */
+     //Pagination ends here */
 
-    const res = await this.user.findAll({
-      limit,
-      offset,
-    });
+    const users = await this.user.findAll();
 
-    return {
-      statusCode: 200,
-      data: {
-        users: res,
-        length: count,
-        currPage: page,
-        totalPages: maxPages,
-      },
-      message: `Total ${count} users found.`,
-    };
+    return users;
   };
 
   /**

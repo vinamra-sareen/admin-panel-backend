@@ -56,14 +56,30 @@ const modulesCondition = (fields) => {
     module_name = null,
     access_type = null,
     navigation_name = null,
+    status = null,
+    parent_module_id = null
   } = fields;
 
   return {
     [Op.and]: [
+      status != null
+        ? {
+            status: {
+              [Op.eq]: status,
+            },
+          }
+        : "",
       module_id != null
         ? {
             module_id: {
               [Op.eq]: module_id,
+            },
+          }
+        : "",
+      parent_module_id != null
+        ? {
+          parent_module_id: {
+              [Op.eq]: parent_module_id,
             },
           }
         : "",

@@ -30,19 +30,13 @@ class ModulesController {
    */
 
   findAll = async (req) => {
-    if (req.validationError) {
-      return req.validationError;
-    }
+    // if (req.validationError) {
+    //   return req.validationError;
+    // }
     
-    const res = await this.modules.findAll();
+    const modules = await this.modules.findAll();
 
-    return {
-      statusCode: 200,
-      data: {
-        modules: res,
-      },
-      message: `Total ${res.length} found.`,
-    };
+    return modules;
   };
 
   /**
@@ -61,6 +55,7 @@ class ModulesController {
 
     const res = await this.modules.findAll({
       where: modulesCondition(req),
+      order:[['navigation_name', 'ASC']]
     });
 
     return res;

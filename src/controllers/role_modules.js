@@ -34,15 +34,9 @@ class RoleModulesController {
       return req.validationError;
     }
     
-    const res = await this.role_modules.findAll();
+    const role_modules = await this.role_modules.findAll();
 
-    return {
-      statusCode: 200,
-      data: {
-        role_modules: res,
-      },
-      message: `Total ${res.length} found.`,
-    };
+    return role_modules;
   };
 
   /**

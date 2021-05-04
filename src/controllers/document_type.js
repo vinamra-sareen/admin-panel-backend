@@ -36,13 +36,7 @@ class DocumentTypeController {
     
     const res = await this.document_type.findAll();
 
-    return {
-      statusCode: 200,
-      data: {
-        document_type: res,
-      },
-      message: `Total ${res.length} found.`,
-    };
+    return res;
   };
 
   /**

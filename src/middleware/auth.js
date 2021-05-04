@@ -33,7 +33,7 @@ module.exports = fp(async function(fastify, opts) {
     try {
       const { is_admin } = await fastify.jwt.decode(req.headers["x-auth-token"]);
       if(is_admin !== "Y") {
-        reply.code(401).send({statusCode: 401, error: "Unauthorized", message: "You do not have rights to access !"});
+        reply.code(401).send({ error: "Unauthorized", message: "You do not have rights to access !"});
       }
     } catch(err) {
       reply.send(err);
@@ -41,9 +41,9 @@ module.exports = fp(async function(fastify, opts) {
   })
 
   // Lets get the data out of the token by decoding it. 
-  fastify.decorate("decodedToken", function(req) {
+  fastify.decorate("decodedToken", async function(req) {
     try {
-      return fastify.jwt.decode(req.headers["x-auth-token"])
+      return await fastify.jwt.decode(req.headers["x-auth-token"])
     } catch(err) {
       reply.send(err);
     }

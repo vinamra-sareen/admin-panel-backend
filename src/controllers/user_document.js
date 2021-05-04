@@ -34,15 +34,9 @@ class UserDocumentController {
       return req.validationError;
     }
     
-    const res = await this.user_document.findAll();
+    const user_document = await this.user_document.findAll();
 
-    return {
-      statusCode: 200,
-      data: {
-        user_document: res,
-      },
-      message: `Total ${res.length} found.`,
-    };
+    return user_document;
   };
 
   /**
