@@ -6,7 +6,7 @@ const userCondition = (fields) => {
     user_name = null,
     email = null,
     status = null,
-    is_admin = null
+    is_admin = null,
   } = fields;
 
   return {
@@ -45,7 +45,7 @@ const userCondition = (fields) => {
               [Op.like]: `%${is_admin}%`,
             },
           }
-        : ""
+        : "",
     ],
   };
 };
@@ -57,7 +57,7 @@ const modulesCondition = (fields) => {
     access_type = null,
     navigation_name = null,
     status = null,
-    parent_module_id = null
+    parent_module_id = null,
   } = fields;
 
   return {
@@ -78,7 +78,7 @@ const modulesCondition = (fields) => {
         : "",
       parent_module_id != null
         ? {
-          parent_module_id: {
+            parent_module_id: {
               [Op.eq]: parent_module_id,
             },
           }
@@ -106,7 +106,7 @@ const modulesCondition = (fields) => {
         : "",
     ],
   };
-} 
+};
 
 const roleModulesCondition = (fields) => {
   let {
@@ -127,17 +127,17 @@ const roleModulesCondition = (fields) => {
         : "",
       role_id != null
         ? {
-          role_id: {
-            [Op.eq]: role_id,
-          },
-        }
+            role_id: {
+              [Op.eq]: role_id,
+            },
+          }
         : "",
       module_id != null
         ? {
-          module_id: {
-            [Op.eq]: module_id,
-          },
-        }
+            module_id: {
+              [Op.eq]: module_id,
+            },
+          }
         : "",
       action_allowed != null
         ? {
@@ -148,13 +148,10 @@ const roleModulesCondition = (fields) => {
         : "",
     ],
   };
-}
+};
 
 const userRoleCondition = (fields) => {
-  let {
-    user_id = null,
-    user_role_id = null,
-  } = fields;
+  let { user_id = null, user_role_id = null } = fields;
 
   return {
     [Op.and]: [
@@ -167,21 +164,17 @@ const userRoleCondition = (fields) => {
         : "",
       user_role_id != null
         ? {
-          user_role_id: {
-            [Op.eq]: user_role_id,
-          },
-        }
+            user_role_id: {
+              [Op.eq]: user_role_id,
+            },
+          }
         : "",
     ],
   };
-}
+};
 
 const documentTypeCondition = (fields) => {
-  let {
-    doc_id = null,
-    doc_name = null,
-    status = null
-  } = fields;
+  let { doc_id = null, doc_name = null, status = null } = fields;
 
   return {
     [Op.and]: [
@@ -194,21 +187,21 @@ const documentTypeCondition = (fields) => {
         : "",
       doc_name != null
         ? {
-          doc_name: {
-            [Op.like]: doc_name,
-          },
-        }
+            doc_name: {
+              [Op.like]: doc_name,
+            },
+          }
         : "",
       status != null
-      ? {
-          status: {
-            [Op.eq]: status,
-          },
-        }
-      : "",
+        ? {
+            status: {
+              [Op.eq]: status,
+            },
+          }
+        : "",
     ],
   };
-}
+};
 
 const userDocumentCondition = (fields) => {
   let {
@@ -219,7 +212,7 @@ const userDocumentCondition = (fields) => {
     file_name = null,
     status = null,
     author = null,
-    user_passport_file_number = null 
+    user_passport_file_number = null,
   } = fields;
 
   return {
@@ -240,50 +233,79 @@ const userDocumentCondition = (fields) => {
         : "",
       doc_type != null
         ? {
-          doc_type: {
-            [Op.eq]: doc_type,
-          },
-        }
+            doc_type: {
+              [Op.eq]: doc_type,
+            },
+          }
         : "",
       user_doc_number != null
-      ? {
-          user_doc_number: {
-            [Op.eq]: user_doc_number,
-          },
-        }
-      : "",
+        ? {
+            user_doc_number: {
+              [Op.eq]: user_doc_number,
+            },
+          }
+        : "",
       file_name != null
         ? {
-          file_name: {
-            [Op.like]: file_name,
-          },
-        }
+            file_name: {
+              [Op.like]: file_name,
+            },
+          }
         : "",
       status != null
         ? {
-          status: {
-            [Op.eq]: status,
-          },
-        }
+            status: {
+              [Op.eq]: status,
+            },
+          }
         : "",
       author != null
         ? {
-          author: {
-            [Op.eq]: author,
-          },
-        }
+            author: {
+              [Op.eq]: author,
+            },
+          }
         : "",
       user_passport_file_number != null
         ? {
-          user_passport_file_number: {
-            [Op.like]: user_passport_file_number,
-          },
-        }
-        : "",  
+            user_passport_file_number: {
+              [Op.like]: user_passport_file_number,
+            },
+          }
+        : "",
     ],
   };
-}
+};
 
+const userBankingInformationRecordCondition = (fields) => {
+  let { user_id = null, from_date = null, to_date = null, status = 1 } = fields;
+
+  return {
+    [Op.and]: [
+      user_id != null
+        ? {
+            user_id: {
+              [Op.eq]: user_id,
+            },
+          }
+        : "",
+      from_date != null || to_date != null
+        ? {
+            linux_added_on: {
+              [Op.between]: [from_date, to_date],
+            },
+          }
+        : "",
+      status != null
+        ? {
+            status: {
+              [Op.or]: [1, 2],
+            },
+          }
+        : "",
+    ],
+  };
+};
 
 module.exports = {
   userCondition,
@@ -291,5 +313,6 @@ module.exports = {
   roleModulesCondition,
   userRoleCondition,
   documentTypeCondition,
-  userDocumentCondition
+  userDocumentCondition,
+  userBankingInformationRecordCondition,
 };

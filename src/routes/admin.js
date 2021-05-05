@@ -56,7 +56,11 @@ module.exports = function (instance, opts, done) {
     handler: async (req, reply) => {
       let result = null;
       
-      result = await userBankingInformationRecordController.findAll({ ...req.query });
+      if(Object.keys(req.query).length > 0){
+        result = await userBankingInformationRecordController.findBy({ ...req.query });
+      } else {
+        result = await userBankingInformationRecordController.findAll();
+      }
       
       reply.code(200).send(result);
     },
