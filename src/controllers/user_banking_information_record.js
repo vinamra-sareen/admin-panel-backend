@@ -60,7 +60,8 @@ class UserBankingInformationRecordController {
       `select br.user_id, br.modified_by,  br.linux_added_on, br.first_name, br.last_name, br.account_number, br.account_type,
        br.IFSC , br.modified_on ,if(br.status = 1, 'approved', 'rejected') as status, 
        (select user_name from cp_user where user_id=br.user_id) as user_name,
-       (select user_name from cp_user where user_id=br.approved_by) as approved_by 
+       (select user_name from cp_user where user_id=br.approved_by) as approved_by,
+       (select user_name from cp_user where user_id=br.modified_by) as requested_by 
        from cp_user_banking_information_record br
        where (br.status = 1 or br.status = 2)
        order by id desc`
@@ -103,10 +104,11 @@ class UserBankingInformationRecordController {
       `select br.user_id, br.modified_by,  br.linux_added_on, br.first_name, br.last_name, br.account_number, br.account_type,
        br.IFSC , br.modified_on , if(br.status = 1, 'approved', 'rejected') as status, 
        (select user_name from cp_user where user_id=br.user_id) as user_name,
-       (select user_name from cp_user where user_id=br.approved_by) as approved_by 
+       (select user_name from cp_user where user_id=br.approved_by) as approved_by,
+       (select user_name from cp_user where user_id=br.modified_by) as requested_by 
        from cp_user_banking_information_record br
-       ${user_id != null ? `where br.user_id = ${user_id} and (br.status = 1 or br.status = 2)` : ``}
-       ${(from_date != null || to_date != null) ? `and br.linux_added_on between ${from_date} and ${to_date}` : ''}
+       ${user_id != null ? `where br.user_id = ${user_id} and (br.status = 1 or br.status = 2)` : `where (br.status = 1 or br.status = 2)`}
+       ${(from_date != null || to_date != null)  ? `and br.linux_added_on between ${from_date} and ${to_date}` : ''}
        order by id desc`
     // , {bind: {user_id: '' , from_date: '', to_date: ''}} 
     );
