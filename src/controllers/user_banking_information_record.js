@@ -3,6 +3,7 @@ const {
 } = require("../utilities/search");
 const paginate = require("../utilities/pagination");
 const { Op, Sequelize } = require("sequelize");
+const dayjs = require("dayjs");
 /**
  *      UserBankingInformationRecordController -
  *
@@ -55,15 +56,18 @@ class UserBankingInformationRecordController {
     // }
     //  //Pagination ends here
 
-    const res = await this.user_banking_information_record.findAll({
-      where: {
-        status: {
-          [Op.or]: [1, 2],
-        },
-      },
-    });
+    const res = await this.sequelize.query(
+      `select br.user_id, br.modified_by,  br.linux_added_on, br.first_name, br.last_name, br.account_number, br.account_type,
+       br.IFSC , br.modified_on ,if(br.status = 1, 'approved', 'rejected') as status, 
+       (select user_name from cp_user where user_id=br.user_id) as user_name,
+       (select user_name from cp_user where user_id=br.approved_by) as approved_by 
+       from cp_user_banking_information_record br
+       where (br.status = 1 or br.status = 2)
+       order by id desc`
+    // , {bind: {user_id: '' , from_date: '', to_date: ''}} 
+    );
 
-    return { res };
+    return {res: res[0]};
   };
 
   /**
@@ -92,10 +96,12 @@ class UserBankingInformationRecordController {
     //   where: userBankingInformationRecordCondition(req),
     // });
     let {user_id = null, from_date = null, to_date = null} = req;
-    
+    from_date = from_date !== null ? dayjs(from_date).unix() : from_date;
+    to_date = to_date !== null ? dayjs(to_date).unix() : to_date;
+
     const res = await this.sequelize.query(
       `select br.user_id, br.modified_by,  br.linux_added_on, br.first_name, br.last_name, br.account_number, br.account_type,
-       br.IFSC , br.modified_on ,br.status, 
+       br.IFSC , br.modified_on , if(br.status = 1, 'approved', 'rejected') as status, 
        (select user_name from cp_user where user_id=br.user_id) as user_name,
        (select user_name from cp_user where user_id=br.approved_by) as approved_by 
        from cp_user_banking_information_record br
