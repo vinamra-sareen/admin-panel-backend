@@ -72,7 +72,7 @@ const modulesCondition = (fields) => {
       module_id != null
         ? {
             module_id: {
-              [Op.eq]: module_id,
+              [Op.in]: module_id,
             },
           }
         : "",
@@ -278,7 +278,7 @@ const userDocumentCondition = (fields) => {
 };
 
 const userBankingInformationRecordCondition = (fields) => {
-  let { user_id = null, from_date = null, to_date = null, status = 1 } = fields;
+  let { user_id = null, from_date = null, to_date = null, status = [1, 2] } = fields;
 
   return {
     [Op.and]: [
@@ -299,7 +299,7 @@ const userBankingInformationRecordCondition = (fields) => {
       status != null
         ? {
             status: {
-              [Op.or]: [1, 2],
+              [Op.or]: status,
             },
           }
         : "",

@@ -20,6 +20,9 @@ app.register(require('fastify-cors'), {
   }
 );
 
+// global compression hook is enabled by default. 
+app.register(require('fastify-compress'));
+
 // Redis for super fast data fetch. Isn't it  mind blowing 🤯
 // app.register(require('fastify-redis'), { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT })
 
@@ -30,10 +33,14 @@ app.register(require('./src/middleware/auth'));
 app.register(require("./config/db.js")).ready();
 
 // Register routes
-app.register(require("./src/routes/index"), { prefix: "/api/v1/" });
-app.register(require("./src/routes/users"), { prefix: "/api/v1/users" });
-app.register(require("./src/routes/auth"), { prefix: "/api/v1/auth" });
-app.register(require('./src/routes/admin'), { prefix: '/api/v1/admin' })
+app.register(require("./src/routes/index"), { prefix: "/api/v2/" });
+app.register(require("./src/routes/users"), { prefix: "/api/v2/users" });
+app.register(require('./src/routes/admin'), { prefix: '/api/v2/admin' })
+
+// fastify.register(autoLoad, {
+//   dir: path.join(__dirname, './src/routes/'),
+//   options: { prefix: '/api/v1' }
+// })
 
 // Initialize the server
 const PORT = process.env.PORT_SERVER || 8000;

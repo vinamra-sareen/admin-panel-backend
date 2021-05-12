@@ -1,8 +1,6 @@
 const { Op } = require("sequelize");
-const paginate = require("../utilities/pagination");
 const { userCondition } = require("../utilities/search");
 const { encrypt } = require('../utilities/crypto');
-
 /**
  *      UserController -
  *
@@ -61,21 +59,6 @@ class UserController {
     if (req.validationError) {
       return req.validationError;
     }
-
-    /*
-    const { page = 1 } = req;
-    const count = await this.user.count();
-
-     // Pagination
-    const { canPaginate, limit, offset, maxPages } = paginate(count, page, 5);
-
-    if (!canPaginate) {
-      return {
-        statusCode: 200,
-        message: `The page you are trying to go doesn\'t exist, Make sure the page you are trying to reach is in range 1-${maxPages}`,
-      };
-    }
-     //Pagination ends here */
 
     const users = await this.user.findAll();
 

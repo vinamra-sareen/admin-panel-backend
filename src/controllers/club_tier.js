@@ -1,4 +1,3 @@
-const paginate = require("../utilities/pagination");
 
 /**
  *      ClubTierController -

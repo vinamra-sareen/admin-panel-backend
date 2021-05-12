@@ -40,6 +40,7 @@ async function sequelizePlugin(app, opts, done) {
           acquire: 30000,
           idle: 10000,
         },
+        logging: true
       });
 
       app.decorate(`db.${DB_NAME}`, sequelize);
