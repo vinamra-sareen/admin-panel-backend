@@ -1,4 +1,4 @@
-const Admin = require('../controllers/admin/admin')
+const Admin = require('../../../../controllers/admin/admin')
 
 /*
  *     All the routes related to Admin, will be available below
@@ -8,6 +8,10 @@ const Admin = require('../controllers/admin/admin')
 
 module.exports = function (app, opts, done) {
   const admin = new Admin(app);
+
+  app.post("/login", {
+    handler: admin.login
+  })
 
   // Route to find based on conditions.
   app.get("/user_document_list", {
@@ -30,3 +34,5 @@ module.exports = function (app, opts, done) {
   
   done();
 };
+
+// module.exports.prefixOverride = '/admin'

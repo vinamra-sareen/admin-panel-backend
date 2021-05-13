@@ -1,5 +1,5 @@
-const UserController = require("../controllers/users");
-const UserSchema = require("../schemas/users");
+const UserController = require("../../../../controllers/users");
+const UserSchema = require("../../../../schemas/users");
 
 /*
  *     All the routes related to user, will be available below
@@ -57,3 +57,5 @@ module.exports = function (app, opts, done) {
   
   done();
 };
+
+module.exports.prefixOverride = '/users'

@@ -24,20 +24,31 @@ class AdminController {
     let { STAGE } = process.env;
     let cardplay = app[`db.${STAGE}cardplay`];
     this.modules = require("../../models/modules")(cardplay);
-    // this.user = require("../../models/users")(cardplay);
-    this.user = require('../../models/users')(cardplay);
+    this.user = require("../../models/users")(cardplay);
     this.user_document = require("../../models/user_document")(cardplay);
     this.document_type = require("../../models/document_type")(cardplay);
     this.role_modules = require("../../models/role_modules")(cardplay);
-    this.user_banking_information_record = require("../../models/user_banking_information_record")(
-      cardplay
-    );
+    this.user_banking_information_record =
+      require("../../models/user_banking_information_record")(cardplay);
 
     // const self = this;
     // (async function () {
     //   await self.user.sync({ alter: true });
     // })();
   }
+
+  // Login route
+  login = async (req, reply) => {
+    const result = await this.user.login(req.body);
+    if (result.status === "success") {
+      const token = this.app.jwt.sign(result);
+      reply
+        .code(200)
+        .send({ ..._.omit(result, ["user_id", "role_id"]), token });
+    } else {
+      reply.code(200).send(result);
+    }
+  };
 
   getModules = async (req, reply) => {
     const { role_id } = await this.app.decodedToken(req);
@@ -92,19 +103,21 @@ class AdminController {
   getUserDocumentList = async (req, reply) => {
     let result = null;
     let { page } = req.query ? req.query : 1;
-    
-    const count = await this.user_document.count({ where: userDocumentCondition(req.query) });
-    
+
+    const count = await this.user_document.count({
+      where: userDocumentCondition(req.query),
+    });
+
     let { canPaginate, limit, offset, maxPages } = paginate(count, page, 10);
 
-    if(!canPaginate){
-        reply.code(400).send({message: `Please check your page number.`})
+    if (!canPaginate) {
+      reply.code(400).send({ message: `Please check your page number.` });
     }
 
     result = await this.user_document.findAll({
       limit,
       offset,
-      order_by: [['linux_added_on', 'desc']],
+      order_by: [["linux_added_on", "desc"]],
       where: userDocumentCondition(req.query),
       attributes: [
         "user_id",
@@ -150,25 +163,32 @@ class AdminController {
       ],
     });
 
-    reply.code(200).send({ curr_page: page, total_pages: maxPages, total_records: count, result });
+    reply.code(200).send({
+      curr_page: page,
+      total_pages: maxPages,
+      total_records: count,
+      result,
+    });
   };
 
   getBankReport = async (req, reply) => {
     let result = null;
     let { page } = req.query ? req.query : 1;
-    
-    const count = await this.user_banking_information_record.count({ where: userBankingInformationRecordCondition(req.query) });
-    
+
+    const count = await this.user_banking_information_record.count({
+      where: userBankingInformationRecordCondition(req.query),
+    });
+
     let { canPaginate, limit, offset, maxPages } = paginate(count, page, 10);
 
-    if(!canPaginate){
-        reply.code(400).send({message: `Please check your page number.`})
+    if (!canPaginate) {
+      reply.code(400).send({ message: `Please check your page number.` });
     }
 
     result = await this.user_banking_information_record.findAll({
       limit,
       offset,
-      order_by: [['linux_added_on', 'desc']],
+      order_by: [["linux_added_on", "desc"]],
       where: userBankingInformationRecordCondition(req.query),
       attributes: [
         "first_name",
@@ -212,7 +232,12 @@ class AdminController {
       ],
     });
 
-    reply.code(200).send({ curr_page: page, total_pages: maxPages, total_records: count, result });
+    reply.code(200).send({
+      curr_page: page,
+      total_pages: maxPages,
+      total_records: count,
+      result,
+    });
   };
 }
 

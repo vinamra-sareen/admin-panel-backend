@@ -1,6 +1,8 @@
 // Get configuration
 const fastify = require("fastify");
 require("make-promises-safe");
+const path = require('path');
+const autoLoad = require('fastify-autoload');
 
 require("dotenv").config({
   path: `./config/.env.${process.env.NODE_ENV ? process.env.NODE_ENV : "stirling"}`,
@@ -33,14 +35,9 @@ app.register(require('./src/middleware/auth'));
 app.register(require("./config/db.js")).ready();
 
 // Register routes
-app.register(require("./src/routes/index"), { prefix: "/api/v2/" });
-app.register(require("./src/routes/users"), { prefix: "/api/v2/users" });
-app.register(require('./src/routes/admin'), { prefix: '/api/v2/admin' })
-
-// fastify.register(autoLoad, {
-//   dir: path.join(__dirname, './src/routes/'),
-//   options: { prefix: '/api/v1' }
-// })
+app.register(autoLoad, {
+  dir: path.join(__dirname, './src/routes/')
+})
 
 // Initialize the server
 const PORT = process.env.PORT_SERVER || 8000;
