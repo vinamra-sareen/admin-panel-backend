@@ -1,4 +1,4 @@
-const Admin = require('../../../../../controllers/admin/admin')
+const Admin = require('../../../../controllers/admin/admin')
 
 /*
  *     All the routes related to Admin, will be available below
@@ -13,11 +13,13 @@ module.exports = function (app, opts, done) {
     handler: admin.login
   })
 
-  app.get("/get_bank_details_report", {
+  app.get("/get_modules", {
     schema: { query: {}},
     preValidation: [app.verifyToken, app.isAdmin, app.hasRole],
-    handler: admin.getBankReport
+    handler: admin.getModules
   });
   
   done();
 };
+
+// module.exports.prefixOverride = '/admin'

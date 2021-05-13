@@ -1,4 +1,4 @@
-const Admin = require('../../../../controllers/admin/admin')
+const { AdminCompliance } = require("../../../../../controllers/admin");
 
 /*
  *     All the routes related to Admin, will be available below
@@ -7,17 +7,13 @@ const Admin = require('../../../../controllers/admin/admin')
  */
 
 module.exports = function (app, opts, done) {
-  const admin = new Admin(app);
+  const adminCompliance = new AdminCompliance(app);
 
-  app.post("/login", {
-    handler: admin.login
-  })
-
-  app.get("/get_modules", {
-    schema: { query: {}},
+  app.get("/get_bank_details_report", {
+    schema: { query: {} },
     preValidation: [app.verifyToken, app.isAdmin, app.hasRole],
-    handler: admin.getModules
+    handler: adminCompliance.getBankReport,
   });
-  
+
   done();
 };
