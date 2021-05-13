@@ -1,7 +1,7 @@
 const {
   userBankingInformationRecordCondition,
-} = require("../../../utilities/search");
-const paginate = require("../../../utilities/pagination");
+} = require("../../utilities/search");
+const paginate = require("../../utilities/pagination");
 const Sequelize = require("sequelize");
 
 /**
@@ -19,9 +19,9 @@ class AdminCompliance {
     this.app = app;
     let { STAGE } = process.env;
     let cardplay = app[`db.${STAGE}cardplay`];
-    this.user = require("../../../models/users")(cardplay);
+    this.user = require("../../models/users")(cardplay);
     this.user_banking_information_record =
-      require("../../../models/user_banking_information_record")(cardplay);
+      require("../../models/user_banking_information_record")(cardplay);
 
     // const self = this;
     // (async function () {

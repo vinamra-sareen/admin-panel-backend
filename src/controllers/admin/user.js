@@ -1,5 +1,5 @@
-const { userDocumentCondition } = require("../../../utilities/search");
-const paginate = require("../../../utilities/pagination");
+const { userDocumentCondition } = require("../../utilities/search");
+const paginate = require("../../utilities/pagination");
 const Sequelize = require("sequelize");
 
 /**
@@ -17,9 +17,9 @@ class User {
     this.app = app;
     let { STAGE } = process.env;
     let cardplay = app[`db.${STAGE}cardplay`];
-    this.user = require("../../../models/users")(cardplay);
-    this.user_document = require("../../../models/user_document")(cardplay);
-    this.document_type = require("../../../models/document_type")(cardplay);
+    this.user = require("../../models/users")(cardplay);
+    this.user_document = require("../../models/user_document")(cardplay);
+    this.document_type = require("../../models/document_type")(cardplay);
 
     // const self = this;
     // (async function () {

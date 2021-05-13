@@ -1,4 +1,4 @@
-const User = require('../../../../../controllers/admin/user')
+const { User } = require("../../../../../controllers/admin/");
 
 /*
  *     All the routes related to Admin, will be available below
@@ -14,6 +14,6 @@ module.exports = function (app, opts, done) {
     preValidation: [app.verifyToken, app.isAdmin, app.hasRole],
     handler: user.getUserDocumentList,
   });
-  
+
   done();
 };

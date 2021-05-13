@@ -1,4 +1,4 @@
-const Admin = require('../../../../controllers/admin/admin')
+const Index = require('../../../../controllers/')
 
 /*
  *     All the routes related to Admin, will be available below
@@ -7,16 +7,16 @@ const Admin = require('../../../../controllers/admin/admin')
  */
 
 module.exports = function (app, opts, done) {
-  const admin = new Admin(app);
+  const index = new Index(app);
 
   app.post("/login", {
-    handler: admin.login
+    handler: index.login
   })
 
   app.get("/get_modules", {
     schema: { query: {}},
     preValidation: [app.verifyToken, app.isAdmin, app.hasRole],
-    handler: admin.getModules
+    handler: index.getModules
   });
   
   done();
