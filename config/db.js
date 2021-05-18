@@ -51,14 +51,14 @@ async function sequelizePlugin(app, opts, done) {
       await sequelize.authenticate();
       // app.log.info("Connection has been established successfully.");
       console.log(`Connection has been established successfully for ${DB_NAME}`);
-
-      done();
     } catch (error) {
       // app.log.error("Unable to connect to the database:", error);
       console.error("Unable to connect to the database:", error);
 
     }
   }
+  
+  done();
 }
 
 module.exports = fp(sequelizePlugin);
