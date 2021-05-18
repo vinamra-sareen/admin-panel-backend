@@ -1,7 +1,5 @@
-const {
-  userBankingInformationRecordCondition,
-} = require("../../utilities/search");
-const paginate = require("../../utilities/pagination");
+const { userBankingInformationRecordCondition } = require("../../utilities/");
+const { paginate } = require("../../utilities/");
 const Sequelize = require("sequelize");
 
 /**

@@ -1,5 +1,5 @@
 /* Pagination */
-module.exports = (count, page, limit = 5) => {
+const paginate = (count, page, limit = 5) => {
   let maxPages = Math.floor(count / limit);
   let offset = 0;
 
@@ -25,3 +25,5 @@ module.exports = (count, page, limit = 5) => {
 };
 
 /** Pagination ends here */
+
+module.exports = { paginate };

@@ -1,5 +1,5 @@
-const { userDocumentCondition } = require("../../utilities/search");
-const paginate = require("../../utilities/pagination");
+const { userDocumentCondition } = require("../../utilities/");
+const { paginate }= require("../../utilities/");
 const Sequelize = require("sequelize");
 
 /**

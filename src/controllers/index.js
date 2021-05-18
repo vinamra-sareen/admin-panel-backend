@@ -1,7 +1,7 @@
 const {
   modulesCondition,
   roleModulesCondition,
-} = require("../utilities/search");
+} = require("../utilities/");
 const _ = require("lodash");
 
 /**
@@ -38,10 +38,21 @@ class IndexController {
   };
 
   getModules = async (req, reply) => {
+    // Get role_id from the token received by client.
     const { role_id } = await this.app.decodedToken(req);
 
+    /* 
+    *   If role id does not equates to 1, first check if  
+    *   Is this request for a submodule, or list of all parent_modules
+    *   Then get a list of all module_ids based on condition formed.
+    *   
+    *   Then get all the modules, by status -> 1, module_ids (by condidtion) and
+    *   parent_module_id -> 0 (for no condition) or req.query.module_id (for submodule request)
+    *    
+    */ 
     if (role_id != 1) {
       let condition = {};
+      // Check to see if there is a request for submodule.
       if (Object.keys(req.query).length > 0) {
         condition = _.omit(req.query, ["module_id"]);
       }
@@ -49,13 +60,16 @@ class IndexController {
       condition.role_id = role_id;
       let mCondition = null;
 
+      // Get all module_id based on or not on condition
       const role_modules = await this.role_modules.findAll({
         where: roleModulesCondition(condition),
         attributes: ["module_id"],
       });
 
+      // Get list of all the module_ids
       let module_ids = _.map(role_modules, "module_id");
 
+      // Prepare a condition object.
       mCondition = {
         parent_link: "",
         status: 1,
@@ -63,6 +77,7 @@ class IndexController {
         parent_module_id: req.query.module_id ? req.query.module_id : 0,
       };
 
+      // Fetch all 
       const modules = await this.modules.findAll({
         where: modulesCondition(mCondition),
         order: [["navigation_name", "ASC"]],
@@ -71,6 +86,10 @@ class IndexController {
 
       reply.code(200).send({ modules });
     } else {
+      /*
+      *    If role_id is 1, get all parent_modules with id -> 0
+      *    and module_id, navigation_name and module_link only.   
+      */
       let condition = null;
       condition = {
         status: 1,

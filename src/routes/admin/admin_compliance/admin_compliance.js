@@ -1,4 +1,4 @@
-const { User } = require("../../../../../controllers/admin/");
+const { AdminCompliance } = require("../../../controllers/admin");
 
 /*
  *     All the routes related to Admin, will be available below
@@ -7,12 +7,12 @@ const { User } = require("../../../../../controllers/admin/");
  */
 
 module.exports = function (app, opts, done) {
-  const user = new User(app);
+  const adminCompliance = new AdminCompliance(app);
 
-  // Route to find based on conditions.
-  app.get("/user_document_list", {
+  app.get("/get_bank_details_report", {
+    schema: { query: {} },
     preValidation: [app.verifyToken, app.isAdmin, app.hasRole],
-    handler: user.getUserDocumentList,
+    handler: adminCompliance.getBankReport,
   });
 
   done();

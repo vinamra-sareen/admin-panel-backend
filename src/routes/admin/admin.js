@@ -1,4 +1,4 @@
-const Index = require('../../../../controllers/')
+const Index = require('../../controllers')
 
 /*
  *     All the routes related to Admin, will be available below

@@ -1,7 +1,7 @@
 const dayjs = require("dayjs")();
 const Sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
-const { encrypt } = require("../utilities/crypto");
+const { encrypt } = require("../utilities/");
 const _ = require("lodash");
 
 module.exports = (db) => {
